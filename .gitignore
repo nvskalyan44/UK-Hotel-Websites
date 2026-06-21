@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+
+# Environment variables — never commit these
+.env
+.env.local
+.env.*.local
+
+# Next.js build output
+.next/
+out/
+
+# Vercel
+.vercel/
+
+# Prisma generated client
+src/generated/prisma/
+
+# OS / editor
+.DS_Store
+*.swp
+*.swo

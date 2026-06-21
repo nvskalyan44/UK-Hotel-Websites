@@ -1,0 +1,354 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model MenuCategory {
+  id           Int        @id @default(autoincrement())
+  name         String     @unique
+  displayOrder Int        @default(0)
+  items        MenuItem[]
+}
+
+model MenuItem {
+  id           String       @id
+  categoryId   Int
+  category     MenuCategory @relation(fields: [categoryId], references: [id])
+  name         String
+  description  String?
+  price        Float
+  emoji        String?
+  isVegetarian Boolean      @default(false)
+  isPopular    Boolean      @default(false)
+  isHero       Boolean      @default(false)
+  isAvailable      Boolean      @default(true)
+  availabilityType String       @default("both")
+  allergens        String       @default("[]")
+  variants         String       @default("[]")
+  image            String?
+  createdAt        DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  orderItems   OrderItem[]
+  reviews      Review[]
+  favourites   Favourite[]
+}
+
+model Customer {
+  id            String    @id
+  name          String
+  email         String    @unique
+  phone         String?
+  loyaltyPoints Int       @default(0)
+  totalSpent    Float     @default(0)
+  totalOrders   Int       @default(0)
+  status        String    @default("active")
+  joinedAt      DateTime  @default(now())
+  lastOrderAt   DateTime?
+  passwordHash  String?
+  otpCode       String?
+  otpExpiry     DateTime?
+  notes         String?
+  savedAddresses String    @default("[]")
+  orders        Order[]
+  reviews       Review[]
+  sessions      CustomerSession[]
+  favourites    Favourite[]
+}
+
+model CustomerSession {
+  id         String   @id @default(cuid())
+  customerId String
+  customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+  expiresAt  DateTime
+}
+
+model Order {
+  id                  String             @id
+  customerId          String?
+  customer            Customer?          @relation(fields: [customerId], references: [id])
+  orderType           String             @default("delivery")
+  status              String
+  paymentStatus       String             @default("paid")
+  paymentMethod       String             @default("card")
+  subtotal            Float
+  discountAmount      Float              @default(0)
+  deliveryFee         Float              @default(0)
+  total               Float
+  customerName        String
+  customerEmail       String
+  customerPhone       String?
+  deliveryAddress     String?
+  deliveryPostcode    String?
+  specialInstructions String?
+  timePreference      String             @default("asap")
+  scheduledTime       DateTime?
+  estimatedMinutes    Int?
+  adminNotes          String?
+  refundAmount        Float?
+  refundReason        String?
+  refundedAt          DateTime?
+  placedAt            DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+  items               OrderItem[]
+  couponRedemption    CouponRedemption?
+}
+
+model OrderItem {
+  id         Int       @id @default(autoincrement())
+  orderId    String
+  order      Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  menuItemId String?
+  menuItem   MenuItem? @relation(fields: [menuItemId], references: [id])
+  itemName   String
+  itemEmoji  String?
+  unitPrice  Float
+  quantity   Int
+  lineTotal  Float
+  notes      String?
+}
+
+model Coupon {
+  id             Int                @id @default(autoincrement())
+  code           String             @unique
+  title          String
+  discountType   String
+  discountValue  Float
+  minOrderAmount Float              @default(0)
+  maxUses        Int?
+  currentUses    Int                @default(0)
+  isActive       Boolean            @default(true)
+  expiresAt      DateTime?
+  createdAt      DateTime           @default(now())
+  startsAt           DateTime?
+  firstOrderOnly     Boolean            @default(false)
+  usageLimitPerUser  Int?
+  applicableCategories String          @default("[]")
+  applicableItems    String             @default("[]")
+  orderType          String?
+  redemptions    CouponRedemption[]
+}
+
+model CouponRedemption {
+  id              Int      @id @default(autoincrement())
+  couponId        Int
+  coupon          Coupon   @relation(fields: [couponId], references: [id])
+  orderId         String   @unique
+  order           Order    @relation(fields: [orderId], references: [id])
+  discountApplied Float
+  redeemedAt      DateTime @default(now())
+}
+
+model Review {
+  id             String    @id
+  customerId     String?
+  customer       Customer? @relation(fields: [customerId], references: [id])
+  menuItemId     String?
+  menuItem       MenuItem? @relation(fields: [menuItemId], references: [id])
+  customerName   String
+  avatarInitials String?
+  rating         Int
+  reviewText     String
+  helpfulCount   Int       @default(0)
+  status         String    @default("pending")
+  createdAt      DateTime  @default(now())
+  publishedAt    DateTime?
+}
+
+model InventoryItem {
+  id            String   @id
+  name          String
+  category      String
+  currentStock  Float
+  unit          String
+  minStockLevel Float
+  maxStockLevel Float
+  updatedAt     DateTime @updatedAt
+}
+
+model SiteSetting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+model ContactMessage {
+  id              Int       @id @default(autoincrement())
+  name            String
+  email           String
+  subject         String
+  message         String
+  status          String    @default("unread")
+  createdAt       DateTime  @default(now())
+  reservationDate String?
+  reservationTime String?
+  partySize       Int?
+  eventDate       String?
+  eventGuests     Int?
+  eventType       String?
+  replyText       String?
+  repliedAt       DateTime?
+}
+
+model AdminActivityLog {
+  id        Int      @id @default(autoincrement())
+  action    String
+  detail    String
+  entityId  String?
+  createdAt DateTime @default(now())
+}
+
+model Favourite {
+  id         Int      @id @default(autoincrement())
+  customerId String
+  customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  menuItemId String
+  menuItem   MenuItem @relation(fields: [menuItemId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+  @@unique([customerId, menuItemId])
+}
+
+model GiftVoucher {
+  id             Int       @id @default(autoincrement())
+  code           String    @unique
+  purchaserEmail String
+  purchaserName  String
+  recipientEmail String?
+  initialAmount  Float
+  balance        Float
+  isActive       Boolean   @default(true)
+  purchasedAt    DateTime  @default(now())
+  expiresAt      DateTime?
+  customMessage  String?
+}
+
+model Combo {
+  id          String   @id
+  name        String
+  description String?
+  price       Float
+  items       String   @default("[]")
+  isAvailable Boolean  @default(true)
+  image       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model AdminAccount {
+  id          Int      @id @default(autoincrement())
+  username    String   @unique
+  password    String
+  role        String   @default("admin")
+  email       String?
+  totpSecret  String?
+  totpEnabled Boolean  @default(false)
+  updatedAt   DateTime @updatedAt
+}
+
+model EmailCampaign {
+  id          Int      @id @default(autoincrement())
+  subject     String
+  body        String
+  targetGroup String   @default("all")
+  sentCount   Int      @default(0)
+  status      String   @default("draft")
+  sentAt      DateTime?
+  createdAt   DateTime @default(now())
+}
+
+model OpeningHours {
+  id           Int     @id @default(autoincrement())
+  dayLabel     String
+  timeLabel    String
+  displayOrder Int     @default(0)
+  isOpen       Boolean @default(true)
+}
+
+model LoyaltyTier {
+  id           Int    @id @default(autoincrement())
+  name         String @unique
+  minPoints    Int
+  maxPoints    Int?
+  color        String
+  badge        String
+  displayOrder Int    @default(0)
+}
+
+model AllergenType {
+  id           Int    @id @default(autoincrement())
+  name         String @unique
+  displayOrder Int    @default(0)
+}
+
+model ReservationTimeSlot {
+  id           Int     @id @default(autoincrement())
+  time         String
+  displayOrder Int     @default(0)
+  isAvailable  Boolean @default(true)
+}
+
+model EventType {
+  id           Int    @id @default(autoincrement())
+  name         String @unique
+  displayOrder Int    @default(0)
+}
+
+model OrderStatus {
+  id             Int     @id @default(autoincrement())
+  value          String  @unique
+  label          String
+  color          String
+  displayOrder   Int     @default(0)
+  isActive       Boolean @default(true)
+  kdsLabel       String?
+  nextStatus     String?
+  kdsActionLabel String?
+  kdsBgColor     String?
+}
+
+model ContentBlock {
+  id        String   @id
+  label     String
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+model NavItem {
+  id           Int     @id @default(autoincrement())
+  site         String
+  href         String
+  label        String
+  icon         String?
+  displayOrder Int     @default(0)
+  isVisible    Boolean @default(true)
+}
+
+model LoyaltyReward {
+  id             Int     @id @default(autoincrement())
+  pointThreshold Int
+  rewardName     String
+  emoji          String  @default("🎁")
+  displayOrder   Int     @default(0)
+  isActive       Boolean @default(true)
+}
+
+model MessageStatus {
+  id           Int     @id @default(autoincrement())
+  value        String  @unique
+  label        String
+  color        String
+  bg           String
+  displayOrder Int     @default(0)
+}
+
+model CampaignSegment {
+  id           Int     @id @default(autoincrement())
+  value        String  @unique
+  label        String
+  description  String?
+  displayOrder Int     @default(0)
+  isActive     Boolean @default(true)
+}
