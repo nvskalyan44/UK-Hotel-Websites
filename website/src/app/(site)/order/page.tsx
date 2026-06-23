@@ -820,7 +820,7 @@ function PaymentStage({ onBack, details, onComplete }: { onBack: () => void; det
         <label style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: 16, background: "rgba(20, 8, 4, 0.4)", borderRadius: 14, border: "1px solid rgba(253, 186, 116, 0.1)", marginBottom: 20, cursor: "pointer" }}>
           <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} style={{ marginTop: 2, width: 18, height: 18, accentColor: "var(--orange-500)" }} />
           <span style={{ fontSize: 14, lineHeight: 1.5 }} className="text-muted">
-            I confirm my order is correct, agree to Abhiruchulu&apos;s terms of service, and consent to my data being used to fulfil this order.
+            I confirm my order is correct, agree to Abhiruchi&apos;s terms of service, and consent to my data being used to fulfil this order.
           </span>
         </label>
 

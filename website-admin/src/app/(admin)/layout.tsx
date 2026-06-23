@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 
 const NAV = [
   { href: "/dashboard",     label: "Dashboard",    icon: "📊" },
+  { href: "/pos",           label: "POS / Till",   icon: "🛒" },
   { href: "/analytics",     label: "Analytics",    icon: "📈" },
   { href: "/orders",        label: "Orders",       icon: "📦" },
   { href: "/kitchen",       label: "Kitchen",      icon: "🍳" },
@@ -66,7 +67,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className="admin-logo">
           <div className="admin-logo-icon">🍛</div>
           <div>
-            <div className="admin-logo-name">Abhiruchulu</div>
+            <div className="admin-logo-name">Abhiruchi</div>
             <div className="admin-logo-sub">Sheffield · Admin</div>
           </div>
         </div>
@@ -150,7 +151,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 View Site
               </a>
             ) : (
-              <div className="admin-clock">Abhiruchulu · Sheffield</div>
+              <div className="admin-clock">Abhiruchi · Sheffield</div>
             )}
           </div>
         </div>

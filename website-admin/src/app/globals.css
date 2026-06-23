@@ -265,6 +265,26 @@
   cursor: pointer; outline: none;
 }
 
+/* ── Dropdown option visibility ──
+   Native <option> popups inherit the OS light theme and render with a white
+   background (invisible light text). Forcing a dark color-scheme + explicit
+   option colours makes the dropdown list readable everywhere. */
+select { color-scheme: dark; }
+select option,
+select optgroup {
+  background-color: #141928;
+  color: #e2e8f0;
+}
+
+/* ── POS quantity buttons ── */
+.pos-qty-btn {
+  width: 26px; height: 26px; border-radius: 7px; font-size: 16px; line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,0.06); border: 1px solid var(--a-border);
+  color: var(--a-text); cursor: pointer; transition: all 120ms; flex-shrink: 0;
+}
+.pos-qty-btn:hover { background: var(--a-orange); border-color: var(--a-orange); color: #fff; }
+
 /* ── Inventory ── */
 .inv-bar-track { height: 6px; background: rgba(255,255,255,0.08); border-radius: 999px; overflow: hidden; margin-top: 10px; }
 .inv-bar-fill  { height: 100%; border-radius: 999px; transition: width 400ms ease; }
@@ -392,5 +412,41 @@
   .a-card[style*="padding: 28"],
   .a-card[style*="padding: 32"] {
     padding: 20px !important;
+  }
+}
+
+/* ── Mobile: collapse inline grids & make tables scrollable ── */
+@media (max-width: 768px) {
+  /* Common inline grid patterns used across admin pages collapse to 1–2 cols */
+  [style*="grid-template-columns: repeat(4, 1fr)"],
+  [style*="gridTemplateColumns: repeat(4, 1fr)"],
+  [style*="repeat(4, 1fr)"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  [style*="grid-template-columns: repeat(3, 1fr)"],
+  [style*="repeat(3, 1fr)"] {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  [style*="grid-template-columns: 1fr 320px"],
+  [style*="grid-template-columns: 1fr 380px"],
+  [style*="1fr 320px"],
+  [style*="1fr 380px"] {
+    grid-template-columns: 1fr !important;
+  }
+  /* Wide data tables (Orders, Customers, Analytics…) scroll horizontally
+     inside their card instead of squishing unreadably on small screens. */
+  .a-table-wrap,
+  .a-card:has(table) { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .a-card table { min-width: 560px; }
+}
+
+@media (max-width: 560px) {
+  /* Two-column form fields in modals stack on small phones */
+  [style*="grid-template-columns: 1fr 1fr"],
+  [style*="gridTemplateColumns: 1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+  [style*="repeat(4, 1fr)"] {
+    grid-template-columns: 1fr 1fr !important;
   }
 }

@@ -11,7 +11,7 @@ function getTransport() {
   });
 }
 
-const FROM = process.env.SMTP_FROM ?? "Abhiruchulu <noreply@abhiruchulu.co.uk>";
+const FROM = process.env.SMTP_FROM ?? "Abhiruchi <noreply@abhiruchi.co.uk>";
 
 const STATUS_LABELS: Record<string, string> = {
   pending:           "Pending",
@@ -88,14 +88,14 @@ export async function sendStatusUpdate(order: StatusUpdateOrder): Promise<void> 
   ${ctaLine}
   <p style="color:#a0917e;font-size:13px;margin-top:28px;border-top:1px solid #2a1a0e;padding-top:20px">
     Questions? Reply to this email or call us.<br/>
-    Thank you for choosing Abhiruchulu 🍛
+    Thank you for choosing Abhiruchi 🍛
   </p>
 </div>`;
 
   await transport.sendMail({
     from: FROM,
     to: order.customerEmail,
-    subject: `${icon} Order #${order.id} update: ${label} — Abhiruchulu`,
+    subject: `${icon} Order #${order.id} update: ${label} — Abhiruchi`,
     html,
   });
 }

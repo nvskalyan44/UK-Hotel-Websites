@@ -273,6 +273,9 @@ h1, h2, h3, h4 {
   box-shadow: 0 0 0 4px rgba(234, 88, 12, 0.12);
   outline: none;
 }
+/* Make native dropdown popups readable on the dark theme */
+select { color-scheme: dark; }
+select option, select optgroup { background-color: #1a0a05; color: var(--ink); }
 .field-textarea { resize: vertical; min-height: 110px; }
 .field-select {
   appearance: none;

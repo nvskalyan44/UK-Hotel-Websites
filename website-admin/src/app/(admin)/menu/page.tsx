@@ -18,6 +18,12 @@ type FormState = {
 const EMPTY: FormState = { name: "", desc: "", price: "", category: "", emoji: "🍛", veg: "non-veg", availabilityType: "both", allergens: [] };
 const EMPTY_VARIANT: Variant = { label: "", price: "" };
 
+// Blob uploads return an absolute URL; local-dev uploads return a relative path
+// served by this admin app. Render either correctly.
+function imgSrc(url: string) {
+  return /^https?:\/\//.test(url) ? url : url;
+}
+
 export default function MenuManagementPage() {
   const [search, setSearch] = useState("");
   const [catFilter, setCatFilter] = useState("all");
@@ -239,7 +245,7 @@ export default function MenuManagementPage() {
             <div key={item.id} className="a-card" style={{ padding: 20, opacity: item.available === false ? 0.55 : 1 }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
                 {item.image
-                  ? <img src={`http://localhost:3002${item.image}`} alt={item.name} style={{ width: 56, height: 56, objectFit: "cover", borderRadius: 12, border: "1px solid var(--a-border)" }} />
+                  ? <img src={imgSrc(item.image)} alt={item.name} style={{ width: 56, height: 56, objectFit: "cover", borderRadius: 12, border: "1px solid var(--a-border)" }} />
                   : <div style={{ fontSize: 36 }}>{item.emoji}</div>
                 }
                 <div style={{ display: "flex", gap: 6 }}>
@@ -345,7 +351,7 @@ export default function MenuManagementPage() {
                 <label style={{ marginBottom: 8, display: "block" }}>Item Photo <span style={{ fontWeight: 400, color: "var(--a-muted)", fontSize: 11 }}>(JPEG / PNG / WebP · max 5 MB)</span></label>
                 {imageUrl ? (
                   <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-                    <img src={`http://localhost:3002${imageUrl}`} alt="item" style={{ width: 80, height: 80, objectFit: "cover", borderRadius: 12, border: "1px solid var(--a-border)" }} />
+                    <img src={imgSrc(imageUrl)} alt="item" style={{ width: 80, height: 80, objectFit: "cover", borderRadius: 12, border: "1px solid var(--a-border)" }} />
                     <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                       <label style={{ cursor: "pointer" }}>
                         <input type="file" accept="image/*" style={{ display: "none" }} onChange={e => e.target.files?.[0] && uploadImage(e.target.files[0])} />

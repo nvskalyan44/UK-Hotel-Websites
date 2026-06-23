@@ -30,12 +30,12 @@ export type SiteConfig = {
 };
 
 const DEFAULT_CONFIG: SiteConfig = {
-  name: "Abhiruchulu",
+  name: "Abhiruchi",
   tagline: "Authentic South Indian Cuisine in the Heart of Sheffield",
   est: 2000,
   address: "142 Ecclesall Road, Sheffield, S11 8JD",
   phone: "+44 114 267 8899",
-  email: "hello@abhiruchulu.co.uk",
+  email: "hello@abhiruchi.co.uk",
   minOrder: 15,
   deliveryCharge: 2.99,
   freeDeliveryThreshold: 35,

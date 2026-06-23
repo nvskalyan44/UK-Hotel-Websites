@@ -33,9 +33,9 @@ type Form = {
 };
 
 const DEFAULTS: Form = {
-  name: "Abhiruchulu", tagline: "Authentic South Indian Cuisine in the Heart of Sheffield",
+  name: "Abhiruchi", tagline: "Authentic South Indian Cuisine in the Heart of Sheffield",
   address: "142 Ecclesall Road, Sheffield, S11 8JD", phone: "+44 114 267 8899",
-  email: "hello@abhiruchulu.co.uk", minOrder: "15", deliveryCharge: "2.99",
+  email: "hello@abhiruchi.co.uk", minOrder: "15", deliveryCharge: "2.99",
   freeDeliveryThreshold: "35",
 };
 

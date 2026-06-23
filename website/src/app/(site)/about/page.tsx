@@ -22,7 +22,7 @@ export default function AboutPage() {
               The Reddy family kitchen — <span className="gradient-text">now your local.</span>
             </h1>
             <p className="text-muted" style={{ fontSize: 18, lineHeight: 1.7 }}>
-              <i>Abhiruchulu</i> means <i>&ldquo;good taste&rdquo;</i> in Telugu. For us it also means good company, good time, and a recipe book that&apos;s older than most of Ecclesall Road.
+              <i>Abhiruchi</i> means <i>&ldquo;good taste&rdquo;</i> in Telugu. For us it also means good company, good time, and a recipe book that&apos;s older than most of Ecclesall Road.
             </p>
           </div>
           <div style={{ position: "relative", minHeight: 400 }}>

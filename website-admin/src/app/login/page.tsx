@@ -32,7 +32,7 @@ export default function LoginPage() {
       <div style={{ background: "#141928", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 16, padding: 40, width: "min(380px, calc(100vw - 32px))" }}>
         <div style={{ textAlign: "center", marginBottom: 32 }}>
           <div style={{ width: 56, height: 56, borderRadius: 14, background: "linear-gradient(135deg, #f59e0b, #ea580c)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28, margin: "0 auto 14px" }}>🍛</div>
-          <div style={{ fontSize: 22, fontWeight: 700, color: "#e2e8f0" }}>Abhiruchulu</div>
+          <div style={{ fontSize: 22, fontWeight: 700, color: "#e2e8f0" }}>Abhiruchi</div>
           <div style={{ fontSize: 13, color: "#8892a4", marginTop: 4 }}>Admin Portal</div>
         </div>
         <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
@@ -72,7 +72,7 @@ export default function LoginPage() {
           </button>
         </form>
         <div style={{ marginTop: 20, fontSize: 11, color: "#8892a4", textAlign: "center" }}>
-          Abhiruchulu Restaurant Management System
+          Abhiruchi Restaurant Management System
         </div>
       </div>
     </div>

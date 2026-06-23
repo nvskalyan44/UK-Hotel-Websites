@@ -142,7 +142,7 @@ export default function ContactPage() {
             {/* Google Maps embed */}
             <div className="card" style={{ height: 280, overflow: "hidden", position: "relative", padding: 0 }}>
               <iframe
-                title="Abhiruchulu location"
+                title="Abhiruchi location"
                 src={config.mapsEmbedUrl}
                 width="100%"
                 height="100%"

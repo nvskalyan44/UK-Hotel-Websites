@@ -13,12 +13,12 @@ export async function GET() {
     for (const s of settings) map[s.key] = s.value;
 
     return NextResponse.json({
-      name:                 map["restaurant_name"]          ?? "Abhiruchulu",
+      name:                 map["restaurant_name"]          ?? "Abhiruchi",
       tagline:              map["restaurant_tagline"]       ?? "Authentic South Indian Cuisine in the Heart of Sheffield",
       est:                  parseInt(map["restaurant_est"]  ?? "2000", 10),
       address:              map["restaurant_address"]       ?? "142 Ecclesall Road, Sheffield, S11 8JD",
       phone:                map["restaurant_phone"]         ?? "+44 114 267 8899",
-      email:                map["restaurant_email"]         ?? "hello@abhiruchulu.co.uk",
+      email:                map["restaurant_email"]         ?? "hello@abhiruchi.co.uk",
       minOrder:             parseFloat(map["restaurant_min_order"]          ?? "15"),
       deliveryCharge:       parseFloat(map["restaurant_delivery_charge"]    ?? "2.99"),
       freeDeliveryThreshold: parseFloat(map["restaurant_free_delivery_min"] ?? "35"),

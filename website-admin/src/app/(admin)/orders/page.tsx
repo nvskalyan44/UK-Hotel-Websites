@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, Fragment } from "react";
+import { printReceipt } from "@/lib/receipt";
 
 type OrderStatus = string;
 
@@ -10,7 +11,11 @@ type AdminOrder = {
   email: string;
   phone: string;
   items: string;
+  lineItems?: { name: string; qty: number; price: number }[];
   itemCount: number;
+  subtotal?: number;
+  discount?: number;
+  paymentMethod?: string;
   total: number;
   payment: string;
   status: OrderStatus;
@@ -98,6 +103,27 @@ ${order.specialInstructions ? `<div class="divider"></div><div class="label">Spe
   win.document.close();
   win.focus();
   setTimeout(() => { win.print(); win.close(); }, 300);
+}
+
+function printCustomerReceipt(order: AdminOrder) {
+  const items = order.lineItems && order.lineItems.length > 0
+    ? order.lineItems
+    : order.items.split(", ").map(s => {
+        const m = s.match(/^(.*?)×\s*(\d+)$/);
+        return { name: (m ? m[1] : s).replace(/^[^\w£]+/, "").trim(), qty: m ? parseInt(m[2]) : 1, price: 0 };
+      });
+  const subtotal = order.subtotal ?? order.total;
+  printReceipt({
+    orderId: order.id,
+    orderType: order.type,
+    paymentMethod: order.paymentMethod ?? order.payment ?? "card",
+    items,
+    subtotal,
+    discount: order.discount ?? 0,
+    total: order.total,
+    customerName: order.customer,
+    placedAt: order.placedAt ?? new Date().toISOString(),
+  });
 }
 
 function exportOrdersCSV(orders: AdminOrder[]) {
@@ -604,6 +630,13 @@ export default function OrdersPage() {
                             onClick={() => printKitchenTicket(order)}
                           >
                             🖨️ Print Kitchen Ticket
+                          </button>
+                          <button
+                            className="a-filter-btn"
+                            style={{ fontSize: 12, padding: "6px 14px" }}
+                            onClick={() => printCustomerReceipt(order)}
+                          >
+                            🧾 Print Receipt
                           </button>
                           {order.refundAmount == null && order.payment !== "refunded" && (
                             <button

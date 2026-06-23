@@ -15,11 +15,11 @@ export async function sendSmsAlert(
   const from = process.env.TWILIO_FROM;
 
   const body =
-    `New order at Abhiruchulu!\n` +
+    `New order at Abhiruchi!\n` +
     `Order: ${orderId}\n` +
     `Customer: ${customerName}\n` +
     `Total: £${total.toFixed(2)}\n` +
-    `Log in to review: https://admin.abhiruchulu.co.uk/orders`;
+    `Log in to review: https://admin.abhiruchi.co.uk/orders`;
 
   if (!sid || !token || !from) {
     console.log("[SMS alert] Twilio not configured — would have sent:", body);

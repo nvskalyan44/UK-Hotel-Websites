@@ -60,7 +60,7 @@ export async function POST(req: Request) {
               currency_code: "GBP",
               value: (amount as number).toFixed(2),
             },
-            description: "Abhiruchulu food order",
+            description: "Abhiruchi food order",
           },
         ],
       }),

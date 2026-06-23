@@ -38,7 +38,7 @@ export function StripeApplePayButton({ amount, agreed, onSuccess, onError, onPro
     const paymentRequest = stripe.paymentRequest({
       country: "GB",
       currency: "gbp",
-      total: { label: "Abhiruchulu Restaurant", amount: Math.round(amount * 100) },
+      total: { label: "Abhiruchi Restaurant", amount: Math.round(amount * 100) },
       requestPayerName: false,
       requestPayerEmail: false,
     });
@@ -56,7 +56,7 @@ export function StripeApplePayButton({ amount, agreed, onSuccess, onError, onPro
   // Update payment request amount when cart total changes
   useEffect(() => {
     if (!pr) return;
-    pr.update({ total: { label: "Abhiruchulu Restaurant", amount: Math.round(amount * 100) } });
+    pr.update({ total: { label: "Abhiruchi Restaurant", amount: Math.round(amount * 100) } });
   }, [pr, amount]);
 
   // Payment handler — wired on each render so it always sees latest callbacks

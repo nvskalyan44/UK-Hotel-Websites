@@ -23,7 +23,7 @@ const DEFAULT_CONTENT: ContentMap = {
   stat_3_value: "25yr",  stat_3_label: "Heritage",
   stat_4_value: "2 hrs", stat_4_label: "Sheffield Delivery",
   story_headline: "A family recipe, twenty-five years on Ecclesall Road.",
-  story_paragraph_1: "Founded in 2000 by Chef Ravi Reddy, Abhiruchulu (the Telugu word for good taste) brings the bold, layered flavours of Hyderabad and Andhra Pradesh to Sheffield's most-loved high street.",
+  story_paragraph_1: "Founded in 2000 by Chef Ravi Reddy, Abhiruchi (the Telugu word for good taste) brings the bold, layered flavours of Hyderabad and Andhra Pradesh to Sheffield's most-loved high street.",
   story_paragraph_2: "Our dum biryani is slow-cooked under sealed dough. Our curries are ground fresh each morning. Our masalas are flown in from family suppliers in Telangana. Nothing shortcut. Everything from scratch.",
   usp_1_icon: "🌶️", usp_1_label: "Hand-ground masalas", usp_1_sub: "Roasted & blended daily",
   usp_2_icon: "🔥",  usp_2_label: "Tandoor-fired",        usp_2_sub: "Charcoal-only, 480°C",

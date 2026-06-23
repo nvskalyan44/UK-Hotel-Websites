@@ -179,7 +179,7 @@ export default function OffersPage() {
         <div className="container">
           <div className="card grid-loyalty" style={{ padding: "40px 32px", background: "linear-gradient(135deg, rgba(251, 191, 36, 0.12), rgba(234, 88, 12, 0.06))", borderColor: "rgba(251, 191, 36, 0.25)" }}>
             <div>
-              <div className="eyebrow" style={{ marginBottom: 14 }}>Abhiruchulu Loyalty</div>
+              <div className="eyebrow" style={{ marginBottom: 14 }}>Abhiruchi Loyalty</div>
               <h2 style={{ fontSize: "clamp(36px, 4.5vw, 52px)", marginBottom: 18 }}>Every order earns you points. Spend them on biryani.</h2>
               <p className="text-muted" style={{ fontSize: 17, lineHeight: 1.6, marginBottom: 28 }}>
                 Earn {config.loyaltyPointsPerPound} points for every £1. Hit {loyaltyRewards[loyaltyRewards.length - 1]?.pointThreshold ?? 500} points and unlock a free Hyderabadi Chicken Biryani. Just like that.

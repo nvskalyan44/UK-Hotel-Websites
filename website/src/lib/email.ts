@@ -11,8 +11,8 @@ function getTransport() {
   });
 }
 
-const FROM = process.env.SMTP_FROM ?? "Abhiruchulu <noreply@abhiruchulu.co.uk>";
-const RESTAURANT_EMAIL = process.env.RESTAURANT_EMAIL ?? "orders@abhiruchulu.co.uk";
+const FROM = process.env.SMTP_FROM ?? "Abhiruchi <noreply@abhiruchi.co.uk>";
+const RESTAURANT_EMAIL = process.env.RESTAURANT_EMAIL ?? "orders@abhiruchi.co.uk";
 
 interface OrderEmailData {
   id: string;
@@ -65,13 +65,13 @@ export async function sendOrderConfirmation(order: OrderEmailData) {
     <span style="color:#fb923c">Estimated time: ~${eta} minutes</span>
   </div>
   ${order.specialInstructions ? `<div style="background:#1c120a;border-radius:12px;padding:16px;font-size:14px;color:#a0917e;margin-bottom:20px">Instructions: ${order.specialInstructions}</div>` : ""}
-  <p style="color:#a0917e;font-size:13px;margin-top:24px">Questions? Call us or reply to this email.<br/>Thank you for choosing Abhiruchulu! 🍛</p>
+  <p style="color:#a0917e;font-size:13px;margin-top:24px">Questions? Call us or reply to this email.<br/>Thank you for choosing Abhiruchi! 🍛</p>
 </div>`;
 
   await transport.sendMail({
     from: FROM,
     to: order.customerEmail,
-    subject: `Order confirmed #${order.id} — Abhiruchulu`,
+    subject: `Order confirmed #${order.id} — Abhiruchi`,
     html,
   });
 }

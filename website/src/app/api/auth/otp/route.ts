@@ -33,7 +33,7 @@ export async function POST(req: Request) {
         });
       }
 
-      const smsSent = await sendSms(phone, `Your Abhiruchulu verification code is: ${otp}. Valid for 5 minutes.`).catch(() => false);
+      const smsSent = await sendSms(phone, `Your Abhiruchi verification code is: ${otp}. Valid for 5 minutes.`).catch(() => false);
       if (smsSent) {
         return NextResponse.json({ ok: true, message: "OTP sent via SMS" });
       }

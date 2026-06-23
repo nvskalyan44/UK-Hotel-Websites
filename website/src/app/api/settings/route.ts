@@ -15,11 +15,11 @@ const KEYS = [
 ];
 
 const DEFAULTS: Record<string, string> = {
-  name: "Abhiruchulu",
+  name: "Abhiruchi",
   tagline: "Authentic Indian Cuisine",
   address: "123 High Street, London, UK",
   phone: "+44 20 0000 0000",
-  email: "info@abhiruchulu.co.uk",
+  email: "info@abhiruchi.co.uk",
   openingHours: "12:00 - 22:00",
   minOrder: "15",
   deliveryCharge: "2.50",

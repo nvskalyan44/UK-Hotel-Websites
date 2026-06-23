@@ -63,7 +63,7 @@ export function Footer() {
         </div>
       </div>
       <div className="container" style={{ marginTop: 48, paddingTop: 24, borderTop: "1px solid rgba(253, 186, 116, 0.06)", display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 8, color: "var(--faint)", fontSize: 13 }}>
-        <span>© {new Date().getFullYear()} Abhiruchulu. All rights reserved.</span>
+        <span>© {new Date().getFullYear()} Abhiruchi. All rights reserved.</span>
         <span>Made with 🌶️ in Sheffield</span>
       </div>
     </footer>

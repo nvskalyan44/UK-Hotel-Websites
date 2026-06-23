@@ -98,7 +98,7 @@ export async function POST(req: Request) {
     for (const recipient of recipients) {
       try {
         await transporter.sendMail({
-          from: `Abhiruchulu Sheffield <${process.env.SMTP_USER}>`,
+          from: `Abhiruchi Sheffield <${process.env.SMTP_USER}>`,
           to: recipient.email,
           subject,
           html: emailBody,

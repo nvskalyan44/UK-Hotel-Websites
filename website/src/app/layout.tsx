@@ -4,21 +4,21 @@ import "@/styles/admin.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "Abhiruchulu — Authentic South Indian Restaurant, Sheffield",
-    template: "%s | Abhiruchulu Sheffield",
+    default: "Abhiruchi — Authentic South Indian Restaurant, Sheffield",
+    template: "%s | Abhiruchi Sheffield",
   },
   description: "Authentic Hyderabadi and Andhra cuisine served on Ecclesall Road, Sheffield. Order delivery or collection online. Est. 2000.",
   keywords: ["South Indian restaurant Sheffield", "Indian food Sheffield", "Hyderabadi cuisine", "Andhra food", "biryani Sheffield", "dosa Sheffield", "curry Sheffield delivery"],
   openGraph: {
-    siteName: "Abhiruchulu",
-    title: "Abhiruchulu — Authentic South Indian Restaurant, Sheffield",
+    siteName: "Abhiruchi",
+    title: "Abhiruchi — Authentic South Indian Restaurant, Sheffield",
     description: "Authentic Hyderabadi and Andhra cuisine on Ecclesall Road, Sheffield. Order online for delivery or collection.",
     locale: "en_GB",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Abhiruchulu — Authentic South Indian, Sheffield",
+    title: "Abhiruchi — Authentic South Indian, Sheffield",
     description: "Authentic Hyderabadi and Andhra cuisine on Ecclesall Road, Sheffield. Order online.",
   },
   robots: { index: true, follow: true },

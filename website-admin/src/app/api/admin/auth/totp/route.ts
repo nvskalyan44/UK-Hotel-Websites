@@ -76,7 +76,7 @@ export async function POST(req: Request) {
     if (action === "setup") {
       const secretBytes = randomBytes(20);
       const secret = base32Encode(secretBytes);
-      const issuer = "Abhiruchulu";
+      const issuer = "Abhiruchi";
       const label = encodeURIComponent(`${issuer}:admin`);
       const qrUrl = `otpauth://totp/${label}?secret=${secret}&issuer=${encodeURIComponent(issuer)}`;
       return NextResponse.json({ secret, qrUrl });

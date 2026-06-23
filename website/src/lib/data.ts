@@ -1,12 +1,12 @@
 import type { RestaurantConfig, MenuItem, Coupon, Review } from "./types";
 
 export const RESTAURANT: RestaurantConfig = {
-  name: "Abhiruchulu",
+  name: "Abhiruchi",
   tagline: "Authentic South Indian Cuisine in the Heart of Sheffield",
   est: 2000,
   address: "142 Ecclesall Road, Sheffield, S11 8JD",
   phone: "+44 114 267 8899",
-  email: "hello@abhiruchulu.co.uk",
+  email: "hello@abhiruchi.co.uk",
   hours: [
     { day: "Mon – Thu", time: "12:00pm – 10:00pm" },
     { day: "Fri – Sat", time: "12:00pm – 11:00pm" },

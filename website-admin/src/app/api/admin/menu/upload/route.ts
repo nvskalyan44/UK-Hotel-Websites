@@ -1,12 +1,10 @@
 export const dynamic = "force-dynamic";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { writeFile, mkdir } from "fs/promises";
-import path from "path";
+import { put, del } from "@vercel/blob";
 
 const ALLOWED = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
-// Save into the customer site's public folder so it's served at /menu-images/*
-const UPLOAD_DIR = path.join(process.cwd(), "..", "website", "public", "menu-images");
+const hasBlob = !!process.env.BLOB_READ_WRITE_TOKEN;
 
 export async function POST(req: Request) {
   try {
@@ -19,15 +17,29 @@ export async function POST(req: Request) {
     if (file.size > 5 * 1024 * 1024) return NextResponse.json({ error: "Max file size is 5 MB" }, { status: 400 });
 
     const ext = file.type === "image/png" ? "png" : file.type === "image/webp" ? "webp" : "jpg";
-    const filename = `${id}.${ext}`;
-
-    await mkdir(UPLOAD_DIR, { recursive: true });
     const buffer = Buffer.from(await file.arrayBuffer());
-    await writeFile(path.join(UPLOAD_DIR, filename), buffer);
+    let imageUrl: string;
 
-    const imageUrl = `/menu-images/${filename}`;
+    if (hasBlob) {
+      // Production / Vercel: persist to Blob storage (survives deploys, served over CDN)
+      const blob = await put(`menu-images/${id}.${ext}`, buffer, {
+        access: "public",
+        contentType: file.type,
+        addRandomSuffix: false,
+        allowOverwrite: true,
+      });
+      imageUrl = blob.url;
+    } else {
+      // Local dev fallback: write into the admin app's own public folder
+      const { writeFile, mkdir } = await import("fs/promises");
+      const path = await import("path");
+      const dir = path.join(process.cwd(), "public", "menu-images");
+      await mkdir(dir, { recursive: true });
+      await writeFile(path.join(dir, `${id}.${ext}`), buffer);
+      imageUrl = `/menu-images/${id}.${ext}`;
+    }
+
     await prisma.menuItem.update({ where: { id }, data: { image: imageUrl } });
-
     return NextResponse.json({ url: imageUrl });
   } catch (err) {
     console.error("[menu upload]", err);
@@ -39,11 +51,21 @@ export async function DELETE(req: Request) {
   try {
     const { id } = await req.json();
     if (!id) return NextResponse.json({ error: "id required" }, { status: 400 });
+
+    const item = await prisma.menuItem.findUnique({ where: { id }, select: { image: true } });
     await prisma.menuItem.update({ where: { id }, data: { image: null } });
-    // Best-effort file deletion
-    const { unlink } = await import("fs/promises");
-    for (const ext of ["jpg", "png", "webp"]) {
-      await unlink(path.join(UPLOAD_DIR, `${id}.${ext}`)).catch(() => {});
+
+    // Best-effort cleanup of the stored file
+    if (item?.image) {
+      if (hasBlob && item.image.startsWith("http")) {
+        await del(item.image).catch(() => {});
+      } else {
+        const { unlink } = await import("fs/promises");
+        const path = await import("path");
+        for (const ext of ["jpg", "png", "webp"]) {
+          await unlink(path.join(process.cwd(), "public", "menu-images", `${id}.${ext}`)).catch(() => {});
+        }
+      }
     }
     return NextResponse.json({ ok: true });
   } catch (err) {
