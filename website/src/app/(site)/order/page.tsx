@@ -1082,6 +1082,16 @@ export default function OrderPage() {
       .catch(() => setIsOpen(true));
   }, []);
 
+  // Deep-link: cart "Checkout" sends ?stage=details to skip the redundant
+  // basket-build step and go straight to the delivery details → payment flow.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("stage") === "details" && cart.items.length > 0) {
+      setStage("details");
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // While checking, render nothing to avoid flash
   if (isOpen === null) {
     return <main style={{ minHeight: "60vh", display: "flex", alignItems: "center", justifyContent: "center" }}><div className="text-muted">Loading…</div></main>;

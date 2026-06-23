@@ -126,7 +126,7 @@ export function CartDrawer() {
               <button
                 className="btn btn-primary"
                 style={{ width: "100%", marginTop: 16 }}
-                onClick={() => { cart.setOpen(false); router.push("/order"); }}
+                onClick={() => { cart.setOpen(false); router.push("/order?stage=details"); }}
               >
                 Checkout · £{cart.total.toFixed(2)} <ArrowIcon />
               </button>
