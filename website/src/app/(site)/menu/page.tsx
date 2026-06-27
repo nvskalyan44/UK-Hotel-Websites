@@ -85,7 +85,7 @@ export default function MenuPage() {
                 style={{ flex: 1, padding: "8px 0", fontSize: 15 }}
               />
             </div>
-            <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+            <div className="cat-chips" style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
               {categories.map((c) => (
                 <button
                   key={c}

@@ -1,5 +1,12 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#0b0e17",
+  viewportFit: "cover", // safe-area insets for notch / home indicator
+};
 
 export const metadata: Metadata = {
   title: "Abhiruchi Admin",

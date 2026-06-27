@@ -159,6 +159,29 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           {children}
         </div>
       </div>
+
+      {/* App-style bottom tab bar (mobile only) */}
+      <nav className="admin-bottomnav" aria-label="Primary">
+        {[
+          { href: "/dashboard", label: "Home",  d: "M3 9.5 12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1Z" },
+          { href: "/pos",       label: "POS",   d: "M6 2 3 6v14a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V6l-3-4ZM3 6h18M16 10a4 4 0 0 1-8 0" },
+          { href: "/orders",    label: "Orders", d: "M9 11V6a3 3 0 0 1 6 0v5M4 8h16l-1 12a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1Z" },
+          { href: "/kitchen",   label: "Kitchen", d: "M8 3v7M5 3v4a3 3 0 0 0 6 0V3M16 3c-1 0-2 4-2 7h4M16 3v18" },
+        ].map(t => {
+          const active = pathname === t.href || pathname.startsWith(t.href + "/");
+          return (
+            <Link key={t.href} href={t.href} className={"admin-bottomnav-item" + (active ? " active" : "")} onClick={() => setSidebarOpen(false)}>
+              <svg width={22} height={22} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round"><path d={t.d} /></svg>
+              <span>{t.label}</span>
+            </Link>
+          );
+        })}
+        <button className="admin-bottomnav-item" onClick={() => setSidebarOpen(true)}>
+          <svg width={22} height={22} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.9} strokeLinecap="round"><line x1={4} y1={6} x2={20} y2={6} /><line x1={4} y1={12} x2={20} y2={12} /><line x1={4} y1={18} x2={20} y2={18} /></svg>
+          <span>More</span>
+          {unreadMsgs > 0 && <span className="admin-bottomnav-badge">{unreadMsgs > 9 ? "9+" : unreadMsgs}</span>}
+        </button>
+      </nav>
     </div>
   );
 }

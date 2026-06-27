@@ -1,6 +1,13 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "@/styles/globals.css";
 import "@/styles/admin.css";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#1a0a05",
+  viewportFit: "cover", // enable safe-area insets (notch / home indicator)
+};
 
 export const metadata: Metadata = {
   title: {

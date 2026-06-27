@@ -117,7 +117,7 @@ export function Header() {
 
           {/* Cart button */}
           <button className="icon-btn cart-btn" onClick={() => cart.setOpen(true)}>
-            <CartIcon /> Cart
+            <CartIcon /> <span className="cart-label">Cart</span>
             {cart.count > 0 && <span className="cart-count">{cart.count}</span>}
           </button>
 
