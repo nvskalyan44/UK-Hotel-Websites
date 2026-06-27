@@ -248,7 +248,7 @@ function VariantModal({ item, onClose }: { item: MenuItem; onClose: () => void }
 
 interface MenuItemCardProps {
   item: MenuItem;
-  mode?: "card" | "row" | "list";
+  mode?: "card" | "row" | "list" | "mini";
 }
 
 export function MenuItemCard({ item, mode = "card" }: MenuItemCardProps) {
@@ -264,6 +264,41 @@ export function MenuItemCard({ item, mode = "card" }: MenuItemCardProps) {
   const variantCartCount = hasVariants ? cart.items.filter(x => x.id.startsWith(`${item.id}:`)).reduce((s, x) => s + x.qty, 0) : 0;
 
   const fromPrice = hasVariants ? Math.min(...item.variants!.map(v => v.price)) : item.price;
+
+  // Compact mini card for tight 2-column mobile grids (e.g. home "popular").
+  if (mode === "mini") {
+    const miniAdd = unavailable ? null : hasVariants ? (
+      <button className="mini-add" type="button" onClick={() => setShowModal(true)}>
+        Add{variantCartCount > 0 ? ` · ${variantCartCount}` : ""}
+      </button>
+    ) : inCart ? (
+      <div className="mini-stepper"><QtyStepper qty={inCart.qty} onChange={q => cart.setQty(item.id, q)} size="sm" /></div>
+    ) : (
+      <button className="mini-add" type="button" onClick={() => cart.add(item)}>Add</button>
+    );
+
+    return (
+      <>
+        <div className="menu-mini" style={{ opacity: unavailable ? 0.55 : 1, pointerEvents: unavailable ? "none" : undefined }}>
+          <div className="mini-thumb">
+            {item.image ? <img src={item.image} alt={item.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} /> : <span style={{ fontSize: 40 }}>{item.emoji}</span>}
+            {item.popular && <span className="mini-pop">🔥</span>}
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 5, marginTop: 8 }}>
+            <span className={"dot " + (item.veg ? "dot-veg" : "dot-nonveg")} />
+            <span className="mini-name">{item.name}</span>
+          </div>
+          <div className="mini-foot">
+            <span className="text-orange" style={{ fontSize: 14, fontWeight: 700, fontFamily: "var(--display)" }}>
+              {hasVariants ? `£${fromPrice.toFixed(2)}` : `£${item.price.toFixed(2)}`}
+            </span>
+            {miniAdd}
+          </div>
+        </div>
+        {showModal && <VariantModal item={item} onClose={() => setShowModal(false)} />}
+      </>
+    );
+  }
 
   // Swiggy / Zomato style compact list row — mobile only.
   if (mode === "list") {

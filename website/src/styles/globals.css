@@ -580,6 +580,36 @@ select option, select optgroup { background-color: #1a0a05; color: var(--ink); }
 }
 .srow-stepper :is(button, span) { color: var(--orange-700) !important; }
 
+/* ── Compact mini card (mobile popular grid) ── */
+.menu-mini {
+  display: flex; flex-direction: column;
+  background: var(--card-bg, rgba(28,18,10,0.5));
+  border: 1px solid rgba(253,186,116,0.12);
+  border-radius: 16px; padding: 8px 8px 12px;
+}
+.mini-thumb {
+  position: relative; width: 100%; aspect-ratio: 1 / 1; border-radius: 12px; overflow: hidden;
+  background: linear-gradient(135deg, rgba(251,191,36,0.12), rgba(234,88,12,0.12));
+  display: flex; align-items: center; justify-content: center;
+}
+.mini-pop { position: absolute; top: 6px; left: 6px; font-size: 14px; }
+.mini-name {
+  font-size: 13.5px; font-weight: 600; line-height: 1.25;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.mini-foot { display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-top: 8px; }
+.mini-add {
+  padding: 5px 12px; border-radius: 8px; cursor: pointer;
+  background: #fff5e8; color: var(--orange-600); border: 1px solid rgba(234,88,12,0.3);
+  font-weight: 800; font-size: 12px; letter-spacing: 0.03em; text-transform: uppercase;
+}
+.mini-stepper :is(button, span) { color: var(--orange-300) !important; }
+
+@media (max-width: 768px) {
+  /* Grid/List toggle is redundant on mobile (always shows the app list) */
+  .view-toggle { display: none !important; }
+}
+
 /* ── Print ── */
 @media print {
   .site-header, .cart-backdrop, .cart-drawer, footer, .btn { display: none !important; }

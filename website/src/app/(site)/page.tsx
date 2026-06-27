@@ -7,6 +7,7 @@ import { MenuItemCard } from "@/components/menu/MenuItemCard";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { AwardIcon, ForkIcon, TagIcon, ArrowIcon, StarIcon } from "@/components/ui/Icons";
 import { useConfig } from "@/context/ConfigContext";
+import { useIsMobile } from "@/lib/useIsMobile";
 import type { MenuItem } from "@/lib/types";
 
 type DBReview = { name: string; rating: number; text: string; role: string };
@@ -35,6 +36,7 @@ const DEFAULT_CONTENT: ContentMap = {
 export default function HomePage() {
   const cart = useCart();
   const config = useConfig();
+  const isMobile = useIsMobile();
   const [menu, setMenu] = useState<MenuItem[]>([]);
   const [reviews, setReviews] = useState<DBReview[]>([]);
   const [content, setContent] = useState<ContentMap>(DEFAULT_CONTENT);
@@ -149,10 +151,10 @@ export default function HomePage() {
               title="Sheffield's most-ordered dishes"
               lead="Twenty thousand customers can't be wrong — these are the plates that keep our regulars coming back week after week."
             />
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 24 }}>
-              {popular.map((m) => <MenuItemCard key={m.id} item={m} />)}
+            <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(auto-fill, minmax(280px, 1fr))", gap: isMobile ? 12 : 24 }}>
+              {popular.map((m) => <MenuItemCard key={m.id} item={m} mode={isMobile ? "mini" : "card"} />)}
             </div>
-            <div style={{ textAlign: "center", marginTop: 48 }}>
+            <div style={{ textAlign: "center", marginTop: isMobile ? 28 : 48 }}>
               <Link href="/menu" className="btn btn-ghost">See full menu <ArrowIcon /></Link>
             </div>
           </div>

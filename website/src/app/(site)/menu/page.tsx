@@ -106,7 +106,7 @@ export default function MenuPage() {
                 🌿 Veg only
               </button>
             </div>
-            <div style={{ display: "flex", gap: 4, padding: 4, background: "rgba(20, 8, 4, 0.5)", borderRadius: 999, border: "1px solid rgba(253, 186, 116, 0.08)" }}>
+            <div className="view-toggle" style={{ display: "flex", gap: 4, padding: 4, background: "rgba(20, 8, 4, 0.5)", borderRadius: 999, border: "1px solid rgba(253, 186, 116, 0.08)" }}>
               <button onClick={() => setView("grid")} className={"nav-tab" + (view === "grid" ? " active" : "")} style={{ padding: "6px 14px", fontSize: 13 }}>Grid</button>
               <button onClick={() => setView("list")} className={"nav-tab" + (view === "list" ? " active" : "")} style={{ padding: "6px 14px", fontSize: 13 }}>List</button>
             </div>
