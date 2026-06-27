@@ -12,6 +12,7 @@ import { CheckIcon, ArrowIcon, ApplePayMark } from "@/components/ui/Icons";
 import { PayPalButtons } from "@/components/ui/PayPalButtons";
 import { StripeApplePayButton } from "@/components/ui/StripeApplePayButton";
 import { useConfig } from "@/context/ConfigContext";
+import { useIsMobile } from "@/lib/useIsMobile";
 import type { MenuItem, OrderDetails, PaymentMethod, PlacedOrder, OrderStage } from "@/lib/types";
 
 /* ── Helpers ── */
@@ -217,6 +218,7 @@ function OrderSummaryCard({ details, showCoupon = false }: { details?: OrderDeta
 
 function BuildStage({ onNext, onBrowse }: { onNext: () => void; onBrowse: () => void }) {
   const config = useConfig();
+  const isMobile = useIsMobile();
   const [cat, setCat] = useState("All");
   const [menu, setMenu] = useState<MenuItem[]>([]);
   const [categories, setCategories] = useState<string[]>(["All"]);
@@ -257,8 +259,8 @@ function BuildStage({ onNext, onBrowse }: { onNext: () => void; onBrowse: () => 
         {menu.length === 0 ? (
           <div style={{ padding: 40, textAlign: "center", color: "var(--muted)" }}>Loading menu…</div>
         ) : (
-          <div style={{ display: "grid", gap: 14 }}>
-            {filtered.map((m) => <MenuItemCard key={m.id} item={m} mode="row" />)}
+          <div style={{ display: "flex", flexDirection: "column", gap: isMobile ? 0 : 14 }}>
+            {filtered.map((m) => <MenuItemCard key={m.id} item={m} mode={isMobile ? "list" : "row"} />)}
           </div>
         )}
       </div>

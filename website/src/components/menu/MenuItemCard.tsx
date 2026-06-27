@@ -248,7 +248,7 @@ function VariantModal({ item, onClose }: { item: MenuItem; onClose: () => void }
 
 interface MenuItemCardProps {
   item: MenuItem;
-  mode?: "card" | "row";
+  mode?: "card" | "row" | "list";
 }
 
 export function MenuItemCard({ item, mode = "card" }: MenuItemCardProps) {
@@ -264,6 +264,51 @@ export function MenuItemCard({ item, mode = "card" }: MenuItemCardProps) {
   const variantCartCount = hasVariants ? cart.items.filter(x => x.id.startsWith(`${item.id}:`)).reduce((s, x) => s + x.qty, 0) : 0;
 
   const fromPrice = hasVariants ? Math.min(...item.variants!.map(v => v.price)) : item.price;
+
+  // Swiggy / Zomato style compact list row — mobile only.
+  if (mode === "list") {
+    const addBtn = unavailable ? (
+      <button className="srow-add" type="button" disabled style={{ opacity: 0.45 }}>Add</button>
+    ) : hasVariants ? (
+      <button className="srow-add" type="button" onClick={() => setShowModal(true)}>
+        Add{variantCartCount > 0 ? ` · ${variantCartCount}` : ""}
+      </button>
+    ) : inCart ? (
+      <div className="srow-stepper"><QtyStepper qty={inCart.qty} onChange={q => cart.setQty(item.id, q)} size="sm" /></div>
+    ) : (
+      <button className="srow-add" type="button" onClick={() => cart.add(item)}>Add</button>
+    );
+
+    return (
+      <>
+        <div className="menu-srow" style={{ opacity: unavailable ? 0.55 : 1, pointerEvents: unavailable ? "none" : undefined }}>
+          <div style={{ flex: 1, minWidth: 0, paddingRight: 14 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 5 }}>
+              <span className={"dot " + (item.veg ? "dot-veg" : "dot-nonveg")} />
+              {item.popular && <span className="badge badge-hot" style={{ fontSize: 9, padding: "2px 7px" }}>POPULAR</span>}
+              {unavailable && <span className="badge" style={{ fontSize: 9, padding: "2px 7px", background: "rgba(107,114,128,0.2)", color: "#9ca3af", border: "1px solid rgba(107,114,128,0.3)" }}>Unavailable</span>}
+            </div>
+            <h4 style={{ fontSize: 16, margin: 0, lineHeight: 1.25 }}>{item.name}</h4>
+            {item.avgRating !== undefined && item.reviewCount !== undefined && item.reviewCount > 0 && (
+              <StarRating avg={item.avgRating} count={item.reviewCount} />
+            )}
+            <div className="text-orange" style={{ fontSize: 15, fontWeight: 700, fontFamily: "var(--display)", marginTop: 4 }}>
+              {hasVariants ? `from £${fromPrice.toFixed(2)}` : `£${item.price.toFixed(2)}`}
+            </div>
+            <p className="text-muted srow-desc" style={{ fontSize: 12.5, lineHeight: 1.45, marginTop: 6 }}>{item.desc}</p>
+          </div>
+
+          <div className="srow-thumb-wrap">
+            <div className="srow-thumb">
+              {item.image ? <img src={item.image} alt={item.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} /> : <span style={{ fontSize: 46 }}>{item.emoji}</span>}
+            </div>
+            <div className="srow-action">{addBtn}</div>
+          </div>
+        </div>
+        {showModal && <VariantModal item={item} onClose={() => setShowModal(false)} />}
+      </>
+    );
+  }
 
   if (mode === "row") {
     return (

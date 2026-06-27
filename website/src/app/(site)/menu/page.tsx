@@ -5,10 +5,12 @@ import Link from "next/link";
 import { MenuItemCard } from "@/components/menu/MenuItemCard";
 import { SearchIcon, ForkIcon, ArrowIcon } from "@/components/ui/Icons";
 import { useConfig } from "@/context/ConfigContext";
+import { useIsMobile } from "@/lib/useIsMobile";
 import type { MenuItem } from "@/lib/types";
 
 export default function MenuPage() {
   const config = useConfig();
+  const isMobile = useIsMobile();
   const [cat, setCat] = useState("All");
   const [view, setView] = useState<"grid" | "list">("grid");
   const [search, setSearch] = useState("");
@@ -166,6 +168,11 @@ export default function MenuPage() {
               <div style={{ fontSize: 56, marginBottom: 16 }}>🤔</div>
               <h3 style={{ fontSize: 24, marginBottom: 8 }}>No dishes match</h3>
               <p className="text-muted">Try a different category or search term.</p>
+            </div>
+          ) : isMobile ? (
+            /* Mobile: Swiggy / Zomato style compact list (both toggle views) */
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              {filtered.map((m) => <MenuItemCard key={m.id} item={m} mode="list" />)}
             </div>
           ) : view === "grid" ? (
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 24 }}>

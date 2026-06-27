@@ -547,6 +547,39 @@ select option, select optgroup { background-color: #1a0a05; color: var(--ink); }
   .app-shell { overflow-x: clip; }
 }
 
+/* ── Swiggy / Zomato style menu list row (mobile only) ── */
+.menu-srow {
+  display: flex; align-items: flex-start;
+  padding: 18px 4px; gap: 12px;
+  border-bottom: 1px dashed rgba(253, 186, 116, 0.14);
+}
+.menu-srow:last-child { border-bottom: none; }
+.srow-desc {
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden; text-overflow: ellipsis;
+}
+.srow-thumb-wrap { width: 118px; flex-shrink: 0; position: relative; padding-bottom: 14px; }
+.srow-thumb {
+  width: 118px; height: 104px; border-radius: 16px; overflow: hidden;
+  background: linear-gradient(135deg, rgba(251,191,36,0.12), rgba(234,88,12,0.12));
+  border: 1px solid rgba(253,186,116,0.14);
+  display: flex; align-items: center; justify-content: center;
+}
+.srow-action { position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); width: 92px; }
+.srow-add {
+  width: 100%; padding: 8px 0; border-radius: 10px; cursor: pointer;
+  background: #fff5e8; color: var(--orange-600); border: 1px solid rgba(234,88,12,0.3);
+  font-weight: 800; font-size: 14px; letter-spacing: 0.04em; text-transform: uppercase;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.35);
+}
+.srow-add:disabled { cursor: not-allowed; }
+.srow-stepper {
+  width: 100%; background: #fff5e8; border-radius: 10px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.35); display: flex; justify-content: center;
+  padding: 2px;
+}
+.srow-stepper :is(button, span) { color: var(--orange-700) !important; }
+
 /* ── Print ── */
 @media print {
   .site-header, .cart-backdrop, .cart-drawer, footer, .btn { display: none !important; }
