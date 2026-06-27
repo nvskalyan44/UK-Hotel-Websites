@@ -410,7 +410,10 @@ select optgroup {
   .admin-main    { margin-left: 0 !important; min-width: 0; max-width: 100%; }
   .admin-content { max-width: 100%; }
   /* Reserve space for the fixed bottom bar */
-  .admin-content { padding: 16px 16px calc(74px + env(safe-area-inset-bottom, 0px)); }
+  .admin-content { padding: 16px 16px calc(92px + env(safe-area-inset-bottom, 0px)); }
+  /* POS cart flows in the page on mobile (not sticky), so its action buttons
+     sit above the bottom tab bar instead of being hidden behind it. */
+  .pos-cart { position: static !important; max-height: none !important; margin-top: 16px; }
   .admin-topbar  { padding: 0 16px; height: 56px; }
   .admin-topbar-left h1 { font-size: 16px; }
   .admin-topbar-left p  { display: none; }
@@ -429,7 +432,8 @@ select optgroup {
 }
 
 @media (max-width: 480px) {
-  .admin-content { padding: 12px; }
+  /* keep the bottom reserve for the fixed tab bar (don't reset it with shorthand) */
+  .admin-content { padding: 12px 12px calc(92px + env(safe-area-inset-bottom, 0px)); }
   .admin-topbar  { padding: 0 12px; }
   .a-grid-stats  { grid-template-columns: 1fr 1fr; }
   .a-grid-3col   { grid-template-columns: 1fr; }

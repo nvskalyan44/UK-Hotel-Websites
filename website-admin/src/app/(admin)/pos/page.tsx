@@ -158,7 +158,7 @@ export default function PosPage() {
       </div>
 
       {/* ── Cart side ── */}
-      <div className="a-card" style={{ padding: 0, position: "sticky", top: 16, display: "flex", flexDirection: "column", maxHeight: "calc(100vh - 90px)" }}>
+      <div className="a-card pos-cart" style={{ padding: 0, position: "sticky", top: 16, display: "flex", flexDirection: "column", maxHeight: "calc(100vh - 90px)" }}>
         <div style={{ padding: "18px 20px", borderBottom: "1px solid var(--a-border)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div style={{ fontWeight: 700, fontSize: 16 }}>Current Order</div>
           <span style={{ fontSize: 12, color: "var(--a-muted)" }}>{count} item{count === 1 ? "" : "s"}</span>
