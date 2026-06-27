@@ -85,6 +85,7 @@ export default function MenuManagementPage() {
     setForm({ ...EMPTY, category: CATEGORY_NAMES[0] ?? "" });
     setVariants([]);
     setImageUrl(null);
+    clearPendingImage();
     setShowModal(true);
   };
   const openEdit = (item: MenuItem) => {
@@ -102,21 +103,47 @@ export default function MenuManagementPage() {
     const rawV = Array.isArray(item.variants) ? item.variants : [];
     setVariants(rawV.map(v => ({ label: v.label, price: String(v.price) })));
     setImageUrl(item.image ?? null);
+    clearPendingImage();
     setShowModal(true);
   };
 
-  const uploadImage = async (file: File) => {
-    if (!editItem) { setSaveError("Save the item first before uploading an image."); return; }
-    setImageUploading(true);
+  // Upload a file for a known item id; returns the stored URL or throws.
+  const uploadFileForId = async (file: File, id: string): Promise<string> => {
     const fd = new FormData();
     fd.append("file", file);
-    fd.append("id", editItem.id);
+    fd.append("id", id);
     const res = await fetch("/api/admin/menu/upload", { method: "POST", body: fd });
-    const data = await res.json();
-    setImageUploading(false);
-    if (!res.ok) { setSaveError(data.error || "Upload failed"); return; }
-    setImageUrl(data.url);
-    setItems(prev => prev.map(i => i.id === editItem.id ? { ...i, image: data.url } : i));
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error || "Upload failed");
+    return data.url as string;
+  };
+
+  // Existing item → upload immediately. New item → stash the file + show a
+  // local preview; it gets uploaded automatically once the item is saved.
+  const handleFileSelect = async (file: File) => {
+    setSaveError("");
+    if (editItem) {
+      setImageUploading(true);
+      try {
+        const url = await uploadFileForId(file, editItem.id);
+        setImageUrl(url);
+        setItems(prev => prev.map(i => i.id === editItem.id ? { ...i, image: url } : i));
+      } catch (e) {
+        setSaveError(e instanceof Error ? e.message : "Upload failed");
+      } finally {
+        setImageUploading(false);
+      }
+    } else {
+      if (pendingPreview) URL.revokeObjectURL(pendingPreview);
+      setPendingFile(file);
+      setPendingPreview(URL.createObjectURL(file));
+    }
+  };
+
+  const clearPendingImage = () => {
+    if (pendingPreview) URL.revokeObjectURL(pendingPreview);
+    setPendingFile(null);
+    setPendingPreview(null);
   };
 
   const removeImage = async () => {
@@ -130,6 +157,9 @@ export default function MenuManagementPage() {
   const [variants, setVariants] = useState<Variant[]>([]);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [imageUploading, setImageUploading] = useState(false);
+  // For NEW items we hold the chosen file until the item is created (upload needs its id)
+  const [pendingFile, setPendingFile] = useState<File | null>(null);
+  const [pendingPreview, setPendingPreview] = useState<string | null>(null);
 
   const saveItem = async () => {
     setSaving(true);
@@ -152,9 +182,19 @@ export default function MenuManagementPage() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         });
-        const data = await res.json().catch(() => ({}));
-        if (!res.ok) { setSaveError(data.error || "Failed to add item"); return; }
-        setItems(prev => [...prev, data]);
+        let created = await res.json().catch(() => ({}));
+        if (!res.ok) { setSaveError(created.error || "Failed to add item"); return; }
+        // Now that the item exists and has an id, upload the chosen photo.
+        if (pendingFile && created?.id) {
+          try {
+            const url = await uploadFileForId(pendingFile, created.id);
+            created = { ...created, image: url };
+          } catch (e) {
+            setSaveError(`Item saved, but image upload failed: ${e instanceof Error ? e.message : "unknown error"}`);
+          }
+        }
+        setItems(prev => [...prev, created]);
+        clearPendingImage();
       }
       setShowModal(false);
     } finally {
@@ -349,27 +389,30 @@ export default function MenuManagementPage() {
               {/* Image upload */}
               <div className="a-field" style={{ gridColumn: "span 2" }}>
                 <label style={{ marginBottom: 8, display: "block" }}>Item Photo <span style={{ fontWeight: 400, color: "var(--a-muted)", fontSize: 11 }}>(JPEG / PNG / WebP · max 5 MB)</span></label>
-                {imageUrl ? (
+                {(imageUrl || pendingPreview) ? (
                   <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-                    <img src={imgSrc(imageUrl)} alt="item" style={{ width: 80, height: 80, objectFit: "cover", borderRadius: 12, border: "1px solid var(--a-border)" }} />
+                    <img src={imageUrl ? imgSrc(imageUrl) : pendingPreview!} alt="item" style={{ width: 80, height: 80, objectFit: "cover", borderRadius: 12, border: "1px solid var(--a-border)" }} />
                     <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                       <label style={{ cursor: "pointer" }}>
-                        <input type="file" accept="image/*" style={{ display: "none" }} onChange={e => e.target.files?.[0] && uploadImage(e.target.files[0])} />
+                        <input type="file" accept="image/*" style={{ display: "none" }} onChange={e => e.target.files?.[0] && handleFileSelect(e.target.files[0])} />
                         <span className="a-filter-btn" style={{ fontSize: 11, padding: "5px 12px", display: "inline-block" }}>
                           {imageUploading ? "Uploading…" : "Replace image"}
                         </span>
                       </label>
-                      <button type="button" className="a-filter-btn" style={{ fontSize: 11, padding: "5px 12px", color: "var(--a-red)", borderColor: "rgba(239,68,68,0.25)" }} onClick={removeImage}>
+                      <button type="button" className="a-filter-btn" style={{ fontSize: 11, padding: "5px 12px", color: "var(--a-red)", borderColor: "rgba(239,68,68,0.25)" }} onClick={() => editItem ? removeImage() : clearPendingImage()}>
                         Remove
                       </button>
+                      {!editItem && pendingPreview && (
+                        <span style={{ fontSize: 10, color: "var(--a-muted)" }}>Uploads when you save</span>
+                      )}
                     </div>
                   </div>
                 ) : (
-                  <label style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 8, padding: "20px 0", borderRadius: 12, border: "2px dashed var(--a-border)", cursor: editItem ? "pointer" : "not-allowed", background: "rgba(255,255,255,0.02)" }}>
-                    <input type="file" accept="image/*" style={{ display: "none" }} disabled={!editItem} onChange={e => e.target.files?.[0] && uploadImage(e.target.files[0])} />
+                  <label style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 8, padding: "20px 0", borderRadius: 12, border: "2px dashed var(--a-border)", cursor: "pointer", background: "rgba(255,255,255,0.02)" }}>
+                    <input type="file" accept="image/*" style={{ display: "none" }} onChange={e => e.target.files?.[0] && handleFileSelect(e.target.files[0])} />
                     <span style={{ fontSize: 28 }}>📷</span>
                     <span style={{ fontSize: 12, color: "var(--a-muted)", textAlign: "center" }}>
-                      {editItem ? (imageUploading ? "Uploading…" : "Click to upload a photo") : "Save the item first, then upload a photo"}
+                      {imageUploading ? "Uploading…" : "Click to upload a photo"}
                     </span>
                   </label>
                 )}
@@ -461,7 +504,7 @@ export default function MenuManagementPage() {
               </div>
             )}
             <div style={{ display: "flex", justifyContent: "flex-end", gap: 10, marginTop: 16 }}>
-              <button className="a-filter-btn" onClick={() => { setShowModal(false); setSaveError(""); setVariants([]); setImageUrl(null); }}>Cancel</button>
+              <button className="a-filter-btn" onClick={() => { setShowModal(false); setSaveError(""); setVariants([]); setImageUrl(null); clearPendingImage(); }}>Cancel</button>
               <button className="admin-action-btn" onClick={saveItem} disabled={saving} style={{ opacity: saving ? 0.7 : 1 }}>
                 {saving ? "Saving…" : editItem ? "Save Changes" : "Add Item"}
               </button>
