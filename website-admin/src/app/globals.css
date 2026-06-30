@@ -280,6 +280,9 @@ select optgroup {
   color: #e2e8f0;
 }
 
+/* ── POS / Till screen – white background (content area only) ── */
+.admin-content.pos-bg { background: #ffffff; }
+
 /* ── POS quantity buttons ── */
 .pos-qty-btn {
   width: 26px; height: 26px; border-radius: 7px; font-size: 16px; line-height: 1;

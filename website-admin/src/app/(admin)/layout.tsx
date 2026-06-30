@@ -155,7 +155,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             )}
           </div>
         </div>
-        <div className="admin-content">
+        <div className={`admin-content${pathname === "/pos" ? " pos-bg" : ""}`}>
           {children}
         </div>
       </div>
