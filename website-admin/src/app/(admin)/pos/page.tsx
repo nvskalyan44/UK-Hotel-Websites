@@ -122,7 +122,7 @@ export default function PosPage() {
           </div>
           {orderType === "dine-in" && (
             <input className="a-input" placeholder="Table #" value={table} onChange={e => setTable(e.target.value)}
-              style={{ width: 90, padding: "8px 12px", background: "rgba(255,255,255,0.05)", border: "1px solid var(--a-border)", borderRadius: 10, color: "inherit", fontSize: 13 }} />
+              style={{ width: 90, padding: "8px 12px", background: "var(--a-input-bg)", border: "1px solid var(--a-border)", borderRadius: 10, color: "inherit", fontSize: 13 }} />
           )}
           <div className="a-search" style={{ flex: "1 1 200px" }}>
             <SearchIcon />
@@ -187,9 +187,9 @@ export default function PosPage() {
           {/* Customer (optional) */}
           <div style={{ display: "flex", gap: 8 }}>
             <input placeholder="Customer name (optional)" value={custName} onChange={e => setCustName(e.target.value)}
-              style={{ flex: 1, padding: "8px 10px", background: "rgba(255,255,255,0.05)", border: "1px solid var(--a-border)", borderRadius: 8, color: "inherit", fontSize: 12 }} />
+              style={{ flex: 1, padding: "8px 10px", background: "var(--a-input-bg)", border: "1px solid var(--a-border)", borderRadius: 8, color: "inherit", fontSize: 12 }} />
             <input placeholder="Phone" value={custPhone} onChange={e => setCustPhone(e.target.value)}
-              style={{ width: 110, padding: "8px 10px", background: "rgba(255,255,255,0.05)", border: "1px solid var(--a-border)", borderRadius: 8, color: "inherit", fontSize: 12 }} />
+              style={{ width: 110, padding: "8px 10px", background: "var(--a-input-bg)", border: "1px solid var(--a-border)", borderRadius: 8, color: "inherit", fontSize: 12 }} />
           </div>
 
           {/* Payment method */}
@@ -211,7 +211,7 @@ export default function PosPage() {
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 13, color: "var(--a-muted)" }}>
             <span>Discount £</span>
             <input type="number" min="0" step="0.01" value={discount} onChange={e => setDiscount(e.target.value)} placeholder="0.00"
-              style={{ width: 80, padding: "4px 8px", background: "rgba(255,255,255,0.05)", border: "1px solid var(--a-border)", borderRadius: 6, color: "inherit", fontSize: 12, textAlign: "right" }} />
+              style={{ width: 80, padding: "4px 8px", background: "var(--a-input-bg)", border: "1px solid var(--a-border)", borderRadius: 6, color: "inherit", fontSize: 12, textAlign: "right" }} />
           </div>
           <div style={{ display: "flex", justifyContent: "space-between", fontSize: 18, fontWeight: 800, paddingTop: 8, borderTop: "1px solid var(--a-border)" }}>
             <span>Total</span><span style={{ color: "var(--a-orange-l)" }}>£{total.toFixed(2)}</span>

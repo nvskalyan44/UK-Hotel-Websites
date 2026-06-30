@@ -280,8 +280,26 @@ select optgroup {
   color: #e2e8f0;
 }
 
-/* ── POS / Till screen – white background (content area only) ── */
-.admin-content.pos-bg { background: #ffffff; }
+/* ── POS / Till screen – full white/light theme (content area only) ── */
+.admin-content.pos-bg {
+  background: #ffffff;
+  --a-bg:       #ffffff;
+  --a-card:     #f8fafc;
+  --a-card-hi:  #f1f5f9;
+  --a-border:   #e2e8f0;
+  --a-text:     #1e293b;
+  --a-muted:    #64748b;
+  --a-faint:    rgba(0, 0, 0, 0.3);
+  --a-input-bg: #f1f5f9;
+  color: #1e293b;
+}
+.pos-bg .a-search           { background: #f1f5f9; border-color: #e2e8f0; }
+.pos-bg .a-search input     { color: #1e293b; }
+.pos-bg .a-filter-btn       { background: #f1f5f9; border-color: #e2e8f0; color: #64748b; }
+.pos-bg .a-filter-btn.active { background: var(--a-orange); border-color: var(--a-orange); color: #fff; }
+.pos-bg .a-filter-btn:not(.active):hover { background: #e2e8f0; color: #1e293b; }
+.pos-bg .pos-qty-btn        { background: #f1f5f9; border-color: #e2e8f0; color: #1e293b; }
+.pos-bg .pos-qty-btn:hover  { background: var(--a-orange); border-color: var(--a-orange); color: #fff; }
 
 /* ── POS quantity buttons ── */
 .pos-qty-btn {
